@@ -1,0 +1,60 @@
+using System;
+
+public class HelloWorld
+{
+	public static void Main(string[] args)
+	{
+		Console.WriteLine("------------------------");
+		Console.WriteLine("This is a simple program in C# using OOP(Object Oriented Programming) to calculate the salaries of the employies ");
+		Console.WriteLine("Which Department are you from (Engineer/Manager/HR) :");
+		string inputArg = (Console.ReadLine());
+		SalarySlip SalarySlip = new SalarySlip();
+		if (inputArg == "Engineer" || inputArg == "engineer")
+		{
+			Console.WriteLine("Your Salary for the previous month is : ${0}", SalarySlip.monthlySalary(inputArg));
+		}
+
+		if (inputArg == "HR" || inputArg == "hr")
+		{
+			Console.WriteLine("Your Salary for the previous month is : ${0} ", SalarySlip.monthlySalary(inputArg));
+		}
+
+		if (inputArg == "Manager" || inputArg == "manager")
+		{
+			Console.WriteLine("Your Salary for the previous month is : ${0}", SalarySlip.monthlySalary(inputArg));
+		}
+
+		Console.WriteLine("------------------------------");
+		Console.WriteLine("Thank you for using the program!!");
+		Console.ReadLine();
+	}
+}
+
+class SalarySlip
+{
+	public static double monthlySalary(string inputArg)
+	{
+		double salary = 0;
+		if (inputArg == "Engineer" || inputArg == "engineer")
+		{
+			double annualAllowance = Convert.ToDouble(7000) / Convert.ToDouble(12);
+			salary = 1500 + annualAllowance;
+		}
+
+		if (inputArg == "Manager" || inputArg == "manager")
+		{
+			double monthlySalaryBeforeTax = 1500 + 250 + 1000;
+			double tax = monthlySalaryBeforeTax * 0.17;
+			salary = monthlySalaryBeforeTax - tax;
+		}
+
+		if (inputArg == "HR" || inputArg == "hr")
+		{
+			int MonthlySalary = 1500 + 150 + 800;
+			double OtherAllowances = (150 + 800) * 0.10;
+			salary = MonthlySalary + OtherAllowances;
+		}
+
+		return salary;
+	}
+}
