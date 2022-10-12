@@ -1,60 +1,89 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-public class HelloWorld
+namespace TechLift_Task
 {
-	public static void Main(string[] args)
-	{
-		Console.WriteLine("------------------------");
-		Console.WriteLine("This is a simple program in C# using OOP(Object Oriented Programming) to calculate the salaries of the employies ");
-		Console.WriteLine("Which Department are you from (Engineer/Manager/HR) :");
-		string inputArg = (Console.ReadLine());
-		SalarySlip SalarySlip = new SalarySlip();
-		if (inputArg == "Engineer" || inputArg == "engineer")
-		{
-			Console.WriteLine("Your Salary for the previous month is : ${0}", SalarySlip.monthlySalary(inputArg));
-		}
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string[] arrayNames = {"Taimoor Ahmed", "Awais Pal", "Muaaz Ahmad", "Azam Butt", "Ahmed Hussain",
+                                   "Muhammad Ibrahim", "Usman Gujjar", "Usama Iqbal", "Waleed Qaiser", "Shehzad Niaz",
+                                   "Aqib Ali", "Danish Bismillah", "Talha Nawazish", "Saad Aslam", "Aleem Alam"};
+            string[] arrayCities = {"Lahore", "Islamabad", "Karachi", "Lahore", "Quetta"
+                                    ,"Faisalabad", "Islamabad", "Karachi", "FATA", "Islamabad"
+                                    ,"Lahore", "Lahore", "Peshawar", "Islamabad", "Lahore"};
+            double[] arrayCgpa = { 3.96, 2.94, 3.02, 3.47, 3.13, 2.1, 2.76, 3.33, 3.82, 3.59, 1.9, 2.3, 3.22, 3.66, 3.18 };
+            List<Applicants> selected = new List<Applicants>();
+            List<Applicants> above90 = new List<Applicants>();
+            Dictionary<string, string> selectedApplicantsDict = new Dictionary<string, string>();
 
-		if (inputArg == "HR" || inputArg == "hr")
-		{
-			Console.WriteLine("Your Salary for the previous month is : ${0} ", SalarySlip.monthlySalary(inputArg));
-		}
+            Console.WriteLine("Selected Applicants from the Array are :" );
+            Console.WriteLine("-----------------------------------------");
 
-		if (inputArg == "Manager" || inputArg == "manager")
-		{
-			Console.WriteLine("Your Salary for the previous month is : ${0}", SalarySlip.monthlySalary(inputArg));
-		}
+            for (int i = 0; i < arrayNames.Length; i++)
+            {
+                Applicants applicants = new Applicants(arrayNames[i], arrayCities[i].ToLower(), arrayCgpa[i]);
+                if (selectedApplicantsDict.ContainsKey(applicants.applicantCity))
+                {
+                    selectedApplicantsDict[applicants.applicantCity] = selectedApplicantsDict[applicants.applicantCity] + "\n" + (applicants.applicantName);
+                }
+                if (!selectedApplicantsDict.ContainsKey(applicants.applicantCity))
+                {
+                    selectedApplicantsDict.Add(applicants.applicantCity, applicants.applicantName);
+                    Console.WriteLine(selectedApplicantsDict[applicants.applicantCity]);
+                }
+                if (applicants.applicantCgpa >= 3.0)
+                {
+                    selected.Add(applicants);
+                }
+            }
+            Console.WriteLine("-----------------------------------------");
+            Console.WriteLine("Selected Candidates with marks greater or equal to 90 : ");
+            Console.WriteLine("-----------------------------------------");
+            for (int i = 0; i < selected.Count; i++)
+            {
+                Random random = new Random();
+                selected[i].SetApplicantMarks(random.Next(90, 101));
+                selected[i].SetApplicantMarks(random.Next(90, 101));
+                if (Convert.ToDouble(selected[i].marks.Sum()) / 2 >= 90)
+                {
+                    Console.WriteLine(selected[i].applicantName);
+                    above90.Add(selected[i]);
+                    
+                }
+            }
+            Console.WriteLine("-----------------------------------------");
+            Console.WriteLine("Enter the City you want to shortlist applicants from : ");
+            Console.WriteLine("-----------------------------------------");
+            string city = Console.ReadLine();
+            Console.WriteLine(selectedApplicantsDict[city.ToLower()]);
+            Console.WriteLine("-----------------------------------------");
+            Console.ReadLine();
+        }
 
-		Console.WriteLine("------------------------------");
-		Console.WriteLine("Thank you for using the program!!");
-		Console.ReadLine();
-	}
-}
+    }
+    public class Applicants
+    {
+        public string applicantName;
+        public string applicantCity;
+        public double applicantCgpa;
+        public List<int> marks = new List<int>();
 
-class SalarySlip
-{
-	public static double monthlySalary(string inputArg)
-	{
-		double salary = 0;
-		if (inputArg == "Engineer" || inputArg == "engineer")
-		{
-			double annualAllowance = Convert.ToDouble(7000) / Convert.ToDouble(12);
-			salary = 1500 + annualAllowance;
-		}
+        public Applicants(string applicantName, string applicantCity, double applicantCgpa)
+        {
+            this.applicantName = applicantName;
+            this.applicantCity = applicantCity;
+            this.applicantCgpa = applicantCgpa;
+        }
 
-		if (inputArg == "Manager" || inputArg == "manager")
-		{
-			double monthlySalaryBeforeTax = 1500 + 250 + 1000;
-			double tax = monthlySalaryBeforeTax * 0.17;
-			salary = monthlySalaryBeforeTax - tax;
-		}
-
-		if (inputArg == "HR" || inputArg == "hr")
-		{
-			int MonthlySalary = 1500 + 150 + 800;
-			double OtherAllowances = (150 + 800) * 0.10;
-			salary = MonthlySalary + OtherAllowances;
-		}
-
-		return salary;
-	}
+        public void SetApplicantMarks(int mark)
+        {
+            marks.Add(mark);
+            
+        }
+    }
 }
